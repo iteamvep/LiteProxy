@@ -1,0 +1,21 @@
+rootProject.name = 'Netty Proxy'
+
+include 'Proxy-ProxyCore'
+
+includeBuild '../Haru-Framework'
+
+def subDirs = rootDir.listFiles(new FileFilter() {
+    public boolean accept(File file) {
+        if (!file.isDirectory()) {
+            return false
+        }
+        if (file.name == 'buildSrc') {
+            return false
+        }
+        return new File(file, 'build.gradle').isFile()
+    }
+});
+
+subDirs.each { File dir ->
+    include dir.name
+}

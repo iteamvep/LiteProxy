@@ -1,0 +1,55 @@
+
+
+version = '0.1.0'
+
+jar {
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    into('assets') {
+        from 'assets'
+    }
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+    manifest {
+        attributes(
+                "Manifest-Version": 0.1,
+                "Main-Class": "org.littleshoot.proxy.Launcher")
+    }
+    baseName = 'ProxyCore'
+    classifier = 'nettyproxy'
+}
+
+
+//添加 Maven 仓库
+repositories {
+    mavenCentral()
+}
+
+//添加依赖
+dependencies {
+    compile "org.iharu.bootstrap:Base-Interface"
+    
+    compile group: 'io.netty', name: 'netty-all', version: '4.1.36.Final'
+    
+    compile group: 'com.barchart.udt', name: 'barchart-udt-bundle', version: '2.3.0'
+    
+    //Apache Utils
+    compileOnly group: 'commons-cli', name: 'commons-cli', version: '1.4'
+
+    compile group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.61'
+    compile group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.61'
+
+    compile('org.littleshoot:dnssec4j:0.1.6') { 
+            exclude group: 'org.littleshoot', module: 'dnsjava'
+            exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+    }
+    compile group: 'dnsjava', name: 'dnsjava', version: '2.1.8'
+    
+    testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '2.1'
+    testCompile group: 'org.hamcrest', name: 'hamcrest-library', version: '2.1'
+
+}
+
+allprojects {
+   task allTask << {
+      println project.name
+   }
+}

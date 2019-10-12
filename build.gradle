@@ -1,0 +1,27 @@
+
+allprojects {
+    apply plugin: 'java'
+    group = 'org.iharu.proxy'
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    repositories {
+        mavenCentral()
+    }
+    [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+    tasks.withType(JavaCompile) {  
+        options.encoding = "UTF-8"  
+    } 
+}
+
+subprojects {
+    ext {
+          junitVersion = "4.12"
+    } 
+    dependencies {
+        
+        compileOnly group: 'io.netty', name: 'netty-all', version: '4.1.30.Final'
+        
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    }
+}
