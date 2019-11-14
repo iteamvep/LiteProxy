@@ -23,6 +23,8 @@ import java.util.regex.Pattern;
  * Utilities for the proxy.
  */
 public class ProxyUtils {
+    private static final Logger LOG = LoggerFactory.getLogger(ProxyUtils.class);
+    
     /**
      * Hop-by-hop headers that should be removed when proxying, as defined by the HTTP 1.1 spec, section 13.5.1
      * (http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html#sec13.5.1). Transfer-Encoding is NOT included in this list, since LittleProxy
@@ -42,7 +44,6 @@ public class ProxyUtils {
             "Keep-Alive".toLowerCase(Locale.US)
     );
 
-    private static final Logger LOG = LoggerFactory.getLogger(ProxyUtils.class);
 
     private static final TimeZone GMT = TimeZone.getTimeZone("GMT");
 
@@ -85,17 +86,43 @@ public class ProxyUtils {
     
     public static String getHost(HttpRequest httpRequest) {
         String host = httpRequest.headers().get(HttpHeaderNames.HOST);
+        int index;
         if(host == null){
             String uri = httpRequest.uri();
             uri = uri.replaceAll(".*//", "");
-            if(uri.contains("/"))
-                uri = uri.split("/")[0];  
-            if(uri.contains("?"))
-                uri = uri.split("\\?")[0];
+            index = uri.indexOf("/");
+            if(index > 0){
+                uri = uri.substring(0, index);
+            }
+            index = uri.indexOf("?");
+            if(index > 0){
+                uri = uri.substring(0, index);
+            }
+//            String[] tmp;
+//            if(uri.contains("/")){
+//                tmp = uri.split("/");
+//                if(tmp.length == 0){
+//                    LOG.warn("split / error: {}", uri);
+//                } else {
+//                    uri = tmp[0]; 
+//                }
+//            }  
+//            if(uri.contains("?")){
+//                tmp = uri.split("\\?");
+//                if(tmp.length == 0){
+//                    LOG.warn("split ? error: {}", uri);
+//                } else {
+//                    uri = tmp[0]; 
+//                }
+//            }
             host = uri;
         } else {
-            if(host.contains(":"))
-                host = host.split(":")[0];
+            index = host.indexOf(":");
+            if(index > 0){
+                host = host.substring(0, index);
+            }
+//            if(host.contains(":"))
+//                host = host.split(":")[0];
         }
         return host;
     }

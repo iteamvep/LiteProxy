@@ -28,12 +28,12 @@ public class PluginManager {
     @PreDestroy
     public void destroyMethod() {
         ProxyFilter.RequestFilter.forEach((k, v) -> {
-            v.forEach(plugin -> {
+            v.getPlugins().forEach(plugin -> {
                 UnloadPlugin(plugin);
             });
         });
         ProxyFilter.ResponseFilter.forEach((k, v) -> {
-            v.forEach(plugin -> {
+            v.getPlugins().forEach(plugin -> {
                 UnloadPlugin(plugin);
             });
         });

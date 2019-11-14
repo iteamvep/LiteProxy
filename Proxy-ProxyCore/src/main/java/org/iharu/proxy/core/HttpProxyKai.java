@@ -153,11 +153,11 @@ public class HttpProxyKai {
                 
                     @Override
                     public HttpFilters filterRequest(HttpRequest originalRequest, ChannelHandlerContext clientCtx) {
-                        String uri = originalRequest.uri();//config.uca.cloud.unity3d.com:443
                         if(ProxyFilter.isBlockConnection(originalRequest)){
                             return null;
                         }
                         
+                        String uri = originalRequest.uri();
                         if (originalRequest.method()== HttpMethod.CONNECT) {
                             if (clientCtx != null) {
                                 LOG.info("https uri: {}", uri);
