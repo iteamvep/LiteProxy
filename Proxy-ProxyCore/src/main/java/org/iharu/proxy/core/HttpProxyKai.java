@@ -50,6 +50,7 @@ import org.iharu.proxy.core.cache.inmem.ProxyFilter;
 import org.iharu.type.error.ErrorType;
 import org.littleshoot.proxy.ChainedProxyType;
 import org.littleshoot.proxy.UnknownChainedProxyTypeException;
+import org.littleshoot.proxy.impl.ProxyUtils;
 
 /**
  *
@@ -153,6 +154,7 @@ public class HttpProxyKai {
                 
                     @Override
                     public HttpFilters filterRequest(HttpRequest originalRequest, ChannelHandlerContext clientCtx) {
+//                        LOG.info("incoming req: {}{}", ProxyUtils.getHost(originalRequest), originalRequest.uri());
                         if(ProxyFilter.isBlockConnection(originalRequest)){
                             return null;
                         }
